@@ -1,0 +1,4 @@
+"0","stationary_point <- rsm::xs(model)"
+"0",""
+"0","colnames(boot$boot) <- names(stationary_point)"
+"0","names(boot$ci)      <- names(stationary_point)"

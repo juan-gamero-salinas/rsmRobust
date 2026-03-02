@@ -1,0 +1,8 @@
+"0","dsg <- ccd(2, n0 = c(2,2), alpha = ""rotatable"", randomize = FALSE)"
+"0",""
+"0","set.seed(1)"
+"0","true_fun <- function(x1, x2){"
+"0","  5 + 0.5*x1 - 0.3*x2 - 0.4*x1^2 - 0.6*x2^2 + 0.2*x1*x2"
+"0","}"
+"0",""
+"0","dsg$y <- with(dsg, true_fun(x1,x2) + rnorm(nrow(dsg), sd=0.1))"

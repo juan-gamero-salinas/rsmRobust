@@ -1,0 +1,163 @@
+---
+title: "Introduction to rsmRobust"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to rsmRobust}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 6,
+  fig.height = 5
+)
+```
+
+# Overview
+
+**rsmRobust** provides a complete workflow for *robust multiobjective optimization* using:
+
+- Response Surface Methodology (RSM)
+- Derringer–Suich desirability
+- Sequential first- and second-order models
+- Bootstrap confidence intervals for stationary points
+- Robustness plots for uncertainty visualization
+
+Based on:
+
+Gamero-Salinas, J., & López-Fidalgo, J. (2025).  
+*Response Surface Methodology using desirability functions for multiobjective optimization to minimize indoor overheating hours and maximize useful daylight illuminance.*  
+Scientific Reports 15, 12173.  
+https://doi.org/10.1038/s41598-025-96376-x
+
+```{r message=FALSE}
+library(rsmRobust)
+```
+
+---
+
+# 1. Screening Design
+
+```{r}
+screen <- run_fractional_screening(
+  nfactors = 4,
+  resolution = 4,
+  factor_names = c("A","B","C","D")
+)
+screen
+```
+
+---
+
+# 2. Noise / Nuisance Factors
+
+```{r}
+set.seed(123)
+noise <- add_noise_factors(
+  n = 10,
+  mean = 0,
+  sd = 2,
+  transform_fn = function(x) ((x * 2) + 15)/100
+)
+noise
+```
+
+---
+
+# 3. Multiresponse Desirability
+
+```{r}
+df_demo <- data.frame(
+  IOH = c(0.05, 0.15, 0.18),
+  UDI = c(80, 50, 40)
+)
+
+compute_desirability(
+  df_demo,
+  ioh_range = c(0,0.2),
+  udi_range = c(35,100)
+)
+```
+
+---
+
+# 4. Sequential RSM
+
+## 4.1 Build CCD and simulate data
+
+```{r}
+dsg <- ccd(2, n0 = c(2,2), alpha = "rotatable", randomize = FALSE)
+
+set.seed(1)
+true_fun <- function(x1, x2){
+  5 + 0.5*x1 - 0.3*x2 - 0.4*x1^2 - 0.6*x2^2 + 0.2*x1*x2
+}
+
+dsg$y <- with(dsg, true_fun(x1,x2) + rnorm(nrow(dsg), sd=0.1))
+```
+
+## 4.2 Fit second-order model
+
+```{r}
+res <- sequential_rsm(
+  data = dsg,
+  formula = y ~ SO(x1, x2),
+  return_real = FALSE
+)
+
+res$stationary_coded
+res$prediction
+```
+
+---
+
+# 5. Bootstrap Confidence Intervals
+
+```{r}
+# Build CCD (central composite design)
+dsg <- ccd(2, n0 = c(2,2), alpha = "rotatable", randomize = FALSE)
+
+# Simulate a quadratic response surface
+set.seed(1)
+true_fun <- function(x1, x2){
+  5 + 0.5*x1 - 0.3*x2 - 0.4*x1^2 - 0.6*x2^2 + 0.2*x1*x2
+}
+
+dsg$y <- with(dsg, true_fun(x1, x2) + rnorm(nrow(dsg), sd = 0.1))
+
+# Fit RSM model
+model <- rsm(y ~ SO(x1, x2), data = dsg)
+
+# Bootstrap stationary point
+boot <- bootstrap_stationary_point(model, B = 50)
+```
+
+---
+
+# 6. Robustness Plot
+
+## 6.1 Align names
+
+```{r}
+stationary_point <- rsm::xs(model)
+
+colnames(boot$boot) <- names(stationary_point)
+names(boot$ci)      <- names(stationary_point)
+```
+
+## 6.2 Plot
+
+```{r}
+plot_robustness_2d(
+  boot_df   = boot$boot,
+  stationary = stationary_point,
+  xvar = names(stationary_point)[1],
+  yvar = names(stationary_point)[2],
+  ci   = boot$ci
+)
+```
+
+

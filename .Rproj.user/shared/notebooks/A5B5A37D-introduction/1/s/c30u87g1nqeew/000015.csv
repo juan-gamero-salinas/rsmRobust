@@ -1,0 +1,6 @@
+"0","screen <- run_fractional_screening("
+"0","  nfactors = 4,"
+"0","  resolution = 4,"
+"0","  factor_names = c(""A"",""B"",""C"",""D"")"
+"0",")"
+"0","screen"

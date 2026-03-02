@@ -1,0 +1,7 @@
+"0","plot_robustness_2d("
+"0","  boot_df   = boot$boot,"
+"0","  stationary = stationary_point,"
+"0","  xvar = names(stationary_point)[1],"
+"0","  yvar = names(stationary_point)[2],"
+"0","  ci   = boot$ci"
+"0",")"

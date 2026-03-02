@@ -1,0 +1,44 @@
+## CITATION file for the rsmRobust package
+
+citHeader("To cite rsmRobust in publications, please use this package entry and, if appropriate, the paper below:")
+
+# Read DESCRIPTION metadata (title/version) at runtime
+meta <- utils::packageDescription("rsmRobust")
+
+# 1) Package citation (no URL, controlled textVersion)
+bibentry(
+  bibtype     = "Manual",
+  title       = meta$Title,
+  author      = c(
+    person("Juan",  "Gamero-Salinas"),
+    person("Jesús", "López-Fidalgo")
+  ),
+  year        = "2026",  # set the year you want shown for the package release
+  note        = sprintf("R package version %s", meta$Version),
+  # Do NOT include 'url = ...' here if you don't want a URL in output
+  textVersion = sprintf(
+    "Gamero-Salinas J, López-Fidalgo J (2026). %s. R package version %s.",
+    meta$Title, meta$Version
+  )
+)
+
+# 2) Article citation (with DOI)
+bibentry(
+  bibtype  = "Article",
+  title    = "Response Surface Methodology using desirability functions for multiobjective optimization to minimize indoor overheating hours and maximize useful daylight illuminance",
+  author   = c(
+    person("Jorge", "Gamero-Salinas"),
+    person("Jesús", "López-Fidalgo")
+  ),
+  journal  = "Scientific Reports",
+  year     = "2025",
+  volume   = "15",
+  pages    = "12173",
+  doi      = "10.1038/s41598-025-96376-x",
+  textVersion = paste(
+    "Gamero-Salinas J, López-Fidalgo J (2025).",
+    "Response Surface Methodology using desirability functions for multiobjective optimization",
+    "to minimize indoor overheating hours and maximize useful daylight illuminance.",
+    "Scientific Reports 15, 12173. https://doi.org/10.1038/s41598-025-96376-x"
+  )
+)
