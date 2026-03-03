@@ -37,8 +37,94 @@ The workflow implements and extends the methodology in:
 
 ------------------------------------------------------------------------
 
+
 ## Installation
 
-From source (inside this repository):
+`rsmRobust` is an R package built with a standard R package structure  
+(`DESCRIPTION`, `NAMESPACE`, `R/`, `man/`).
 
-\`\`\`r \# in the package root directory devtools::install()
+To install it from source, you will need the **devtools** package:
+
+```r
+install.packages("devtools")
+```
+
+---
+
+### 1️⃣ Clone or Download the Repository
+
+#### Option A — Clone with Git
+
+```bash
+git clone https://github.com/<your-username>/rsmRobust.git
+cd rsmRobust
+```
+
+#### Option B — Download Manually
+
+1. Click **Code → Download ZIP**
+2. Unzip the folder
+3. Open the project in **RStudio**
+
+---
+
+### 2️⃣ Build and Install the Package
+
+Make sure you are inside the package root directory  
+(the folder containing the `DESCRIPTION` file), then run:
+
+```r
+# Generate documentation from roxygen2 comments
+devtools::document()
+
+# Install the package locally
+devtools::install(upgrade = "never")
+
+# (Optional) Run package checks
+devtools::check(vignettes = FALSE)
+```
+
+---
+
+## What These Commands Do
+
+### `devtools::document()`
+
+- Creates `.Rd` documentation files  
+- Updates the `NAMESPACE` file  
+- Generates documentation from roxygen2 comments  
+- You **do not** need to manually edit `DESCRIPTION`, `NAMESPACE`, or files in `R/`
+
+---
+
+### `devtools::install()`
+
+- Installs the package in your local R library  
+- Works as if installing from CRAN  
+
+---
+
+### `devtools::check()`
+
+- Runs `R CMD check`  
+- Confirms that the package structure and documentation are valid  
+
+---
+
+## 3️⃣ Load the Package
+
+After installation:
+
+```r
+library(rsmRobust)
+```
+
+---
+
+## System Requirements
+
+- **R ≥ 4.1.0**
+- Dependencies such as `rsm`, `desirability`, and `FrF2`  
+  are installed automatically via the `Imports:` field in the `DESCRIPTION` file.
+
+
