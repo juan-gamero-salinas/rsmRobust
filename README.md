@@ -102,12 +102,6 @@ devtools::check(vignettes = FALSE)
 - Installs the package in your local R library  
 - Works as if installing from CRAN  
 
----
-
-### `devtools::check()`
-
-- Runs `R CMD check`  
-- Confirms that the package structure and documentation are valid  
 
 ---
 
