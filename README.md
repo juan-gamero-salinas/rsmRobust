@@ -27,7 +27,7 @@ top of [`rsm`](https://cran.r-project.org/package=rsm),
 - **Noise modeling**: `add_noise_factors()`
 - **Two‑response desirability**: `compute_desirability()`
 
-The workflow implements and extends the methodology in:
+The workflow extends the methodology in:
 
 > Gamero‑Salinas, J., & López‑Fidalgo, J. (2025).  
 > *Response Surface Methodology using desirability functions for
